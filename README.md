@@ -187,9 +187,25 @@ OCR pipeline for English, Hindi, Spanish, and more, achieving 95% recognition ac
 
 <br/><br/>
 
+### :: REAL_GITHUB_CONTRIBUTIONS
+
 <img src="https://github-readme-activity-graph.vercel.app/graph?username=RishiPandey9&bg_color=0D0F12&color=C6FF00&line=C6FF00&point=FF2E63&hide_border=true" width="100%"/>
 
 <br/>
+
+### :: DEMO_CONTRIBUTION_CALENDAR
+
+> **Simulated/demo visualization only.** This calendar is independently generated artwork and does not represent or modify RishiPandey9's actual GitHub contribution history.
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="./assets/demo-contribution-calendar-dark.svg">
+  <source media="(prefers-color-scheme: light)" srcset="./assets/demo-contribution-calendar-light.svg">
+  <img alt="Simulated green contribution calendar demonstration" src="./assets/demo-contribution-calendar-dark.svg" width="100%">
+</picture>
+
+<br/>
+
+### :: CONTRIBUTION_SNAKE
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/RishiPandey9/RishiPandey9/output/github-contribution-grid-snake-dark.svg">
