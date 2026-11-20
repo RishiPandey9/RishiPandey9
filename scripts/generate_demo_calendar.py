@@ -30,11 +30,11 @@ def generate(config, colors, theme):
     }
 
     rng = random.Random(seed)
-    start = dt.date(year, 1, 1)
-    end = dt.date(year, 12, 31)
+    start = dt.date.fromisoformat(config.get("startDate", f"{year}-01-01"))
+    end = dt.date.fromisoformat(config.get("endDate", f"{year}-12-31"))
     dates = [start + dt.timedelta(days=index) for index in range((end - start).days + 1)]
 
-    eligible = [date for date in dates if date.month == date.month]
+    eligible = list(dates)
     rng.shuffle(eligible)
     selected = set(eligible[:square_count])
     levels = {}
@@ -51,26 +51,43 @@ def generate(config, colors, theme):
     first = start - dt.timedelta(days=start.weekday())
     last = end
     week_count = ((last - first).days // 7) + 1
-    cell = 12
+    cell = 10
     gap = 3
     left = 44
-    top = 32
-    width = left + week_count * (cell + gap) + 12
-    height = top + 7 * (cell + gap) + 32
+    top = 96
+    width = 760
+    height = 250
+    panel_dark = "#0d1117"
+    panel_light = "#ffffff"
+    border_dark = "#30363d"
+    border_light = "#d0d7de"
+    text_dark = "#c9d1d9"
+    text_light = "#24292f"
+    muted_dark = "#8b949e"
+    muted_light = "#57606a"
 
     svg = [
         f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" viewBox="0 0 {width} {height}" role="img" aria-labelledby="title desc">',
-        f'<title id="title">Simulated demo contribution calendar for {year}</title>',
+        f'<title id="title">Simulated demo contribution calendar for {start.isoformat()} through {end.isoformat()}</title>',
         '<desc id="desc">This is independently generated demo artwork and is not a record of real GitHub contributions.</desc>',
-        f'<rect width="{width}" height="{height}" rx="8" fill="{ "#0d1117" if theme == "dark" else "#ffffff"}"/>',
-        '<text x="44" y="18" fill="' + ("#c9d1d9" if theme == "dark" else "#24292f") + '" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif" font-size="12" font-weight="600">Demo contribution calendar - not real GitHub activity</text>',
-        '<g font-family="-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif" font-size="9" fill="' + ("#8b949e" if theme == "dark" else "#57606a") + '">',
+        f'<rect x="0" y="0" width="{width}" height="{height}" rx="8" fill="{panel_dark if theme == "dark" else panel_light}" stroke="{border_dark if theme == "dark" else border_light}"/>',
+        f'<text x="16" y="28" fill="{text_dark if theme == "dark" else text_light}" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif" font-size="14" font-weight="600">{square_count} simulated contributions</text>',
+        f'<text x="16" y="48" fill="{muted_dark if theme == "dark" else muted_light}" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif" font-size="10">DEMO ONLY - independently generated visual, not real GitHub activity</text>',
+        f'<g font-family="-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif" font-size="9" fill="{muted_dark if theme == "dark" else muted_light}">',
     ]
 
-    for index, label in enumerate(["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]):
-        month = dt.date(year, index + 1, 1)
-        x = left + ((month - first).days // 7) * (cell + gap)
-        svg.append(f'<text x="{x}" y="{top - 8}">{label}</text>')
+    month_labels = []
+    cursor_month = dt.date(start.year, start.month, 1)
+    while cursor_month <= end:
+        next_month = dt.date(cursor_month.year + 1, 1, 1) if cursor_month.month == 12 else dt.date(cursor_month.year, cursor_month.month + 1, 1)
+        month_start = max(cursor_month, start)
+        week_index = (month_start - first).days // 7
+        x = left + week_index * (cell + gap)
+        month_labels.append((x, cursor_month.strftime("%b")))
+        cursor_month = next_month
+    for x, label in month_labels:
+        svg.append(f'<text x="{x}" y="{top - 12}">{label}</text>')
+
     for row, label in enumerate(["Mon", "", "Wed", "", "Fri", "", ""]):
         if label:
             svg.append(f'<text x="8" y="{top + row * (cell + gap) + 10}">{label}</text>')
@@ -92,12 +109,12 @@ def generate(config, colors, theme):
         if cursor.weekday() == 0:
             week += 1
 
-    legend_y = height - 16
-    legend_x = width - 92
-    svg.append(f'<text x="{legend_x - 34}" y="{legend_y + 9}" fill="' + ("#8b949e" if theme == "dark" else "#57606a") + '" font-size="9">Less</text>')
+    legend_y = height - 26
+    legend_x = width - 112
+    svg.append(f'<text x="{legend_x - 30}" y="{legend_y + 9}" fill="{muted_dark if theme == "dark" else muted_light}" font-size="9">Less</text>')
     for level in range(5):
         svg.append(f'<rect x="{legend_x + level * (cell + gap)}" y="{legend_y}" width="{cell}" height="{cell}" rx="2" fill="{colors[level]}"/>')
-    svg.append(f'<text x="{legend_x + 5 * (cell + gap) + 4}" y="{legend_y + 9}" fill="' + ("#8b949e" if theme == "dark" else "#57606a") + '" font-size="9">More</text>')
+    svg.append(f'<text x="{legend_x + 5 * (cell + gap) + 4}" y="{legend_y + 9}" fill="{muted_dark if theme == "dark" else muted_light}" font-size="9">More</text>')
     svg.append("</g></svg>")
     return "\n".join(svg) + "\n"
 

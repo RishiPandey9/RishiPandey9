@@ -1,6 +1,8 @@
 {
   "year": 2026,
-  "squareCount": 120,
+  "startDate": "2025-11-16",
+  "endDate": "2026-11-20",
+  "squareCount": 449,
   "intensity": [0, 1, 2, 3, 4],
   "seed": 20261120,
   "dateLevels": {
