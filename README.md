@@ -193,18 +193,6 @@ OCR pipeline for English, Hindi, Spanish, and more, achieving 95% recognition ac
 
 <br/>
 
-### :: DEMO_CONTRIBUTION_CALENDAR
-
-> **Simulated/demo visualization only.** This calendar is independently generated artwork and does not represent or modify RishiPandey9's actual GitHub contribution history.
-
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="./assets/demo-contribution-calendar-dark.svg">
-  <source media="(prefers-color-scheme: light)" srcset="./assets/demo-contribution-calendar-light.svg">
-  <img alt="Simulated green contribution calendar demonstration" src="./assets/demo-contribution-calendar-dark.svg" width="100%">
-</picture>
-
-<br/>
-
 ### :: CONTRIBUTION_SNAKE
 
 <picture>
